@@ -1,5 +1,16 @@
+"""
+Flask API for Emotion Detection.
+
+This API processes text input and returns emotion analysis.
+"""
+
+import sys
+import os
+
 from flask import Flask, request, jsonify
-from EmotionDetection import emotion_detector
+from EmotionDetection.emotion_detection import emotion_detector
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))  # Ensure module is recognized
 
 app = Flask(__name__)
 
@@ -7,7 +18,6 @@ app = Flask(__name__)
 def detect_emotion():
     """
     Handles GET and POST requests for emotion detection.
-    
     - GET: Returns a message instructing to use POST.
     - POST: Processes text input and returns emotion analysis.
     """
@@ -23,11 +33,10 @@ def detect_emotion():
 
     if response["dominant_emotion"] is None:
         return jsonify({"error": "Invalid text! Please try again!"}), 400
-
     formatted_response = (
-        f"For the given statement, the system response is "
-        f"'anger': {response['anger']}, 'disgust': {response['disgust']}, "
-        f"'fear': {response['fear']}, 'joy': {response['joy']} and 'sadness': {response['sadness']}. "
+        "For the given statement, the system response is "
+        f"'anger': {response['anger']}, 'disgust': {response['disgust']}, 'fear': {response['fear']}, "
+        f"'joy': {response['joy']}, and 'sadness': {response['sadness']}. "
         f"The dominant emotion is {response['dominant_emotion']}."
     )
 
